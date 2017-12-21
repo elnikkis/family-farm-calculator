@@ -41,6 +41,9 @@ def load_prices_data(filename):
             cost = int(line[1]) if line[1] else np.nan
             price = int(line[2]) if line[2] else np.nan
             kind = line[4]
+            # 重複した行があれば警告を出す
+            if name in prices:
+                print('warn: Duplicated row for {}'.format(name), file=sys.stderr)
             prices[name] = Price(cost, price, kind)
     return prices
 
