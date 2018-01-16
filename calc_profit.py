@@ -29,7 +29,7 @@ def parse_args():
 
 def load_prices_data(filename):
     prices = {}
-    with open(filename, encoding='cp932') as fp:
+    with open(filename) as fp:
         # skip header
         print('price header:', next(fp).rstrip(), file=sys.stderr)
         for line in fp:
@@ -40,7 +40,7 @@ def load_prices_data(filename):
                 continue
             cost = int(line[1]) if line[1] else np.nan
             price = int(line[2]) if line[2] else np.nan
-            kind = line[4]
+            kind = line[3]
             # 重複した行があれば警告を出す
             if name in prices:
                 print('warn: Duplicated row for {}'.format(name), file=sys.stderr)
@@ -49,8 +49,8 @@ def load_prices_data(filename):
 
 def load_materials_data(filename):
     materials = {}
-    with open(filename, encoding='cp932') as fp:
-        print('header:', next(fp).rstrip(), file=sys.stderr)
+    with open(filename) as fp:
+        print('material header:', next(fp).rstrip(), file=sys.stderr)
         for line in fp:
             line = [x for x in line.rstrip().split(',') if x]
 
@@ -59,7 +59,7 @@ def load_materials_data(filename):
                 continue
 
             if len(line) < 2 or len(line) % 2 != 1:
-                print('info: {} is not set materials.'.format(line[0]), file=sys.stderr)
+                print('info: {} is not set any materials.'.format(line[0]), file=sys.stderr)
                 continue
             target = line[0]
             # 素材名1, 個数, 素材名2, 個数, ... という形式になっている
